@@ -3,7 +3,7 @@ name: Deploy Flutter Web to GitHub Pages
 on:
   push:
     branches:
-      - main  # ganti ke branch utama kamu kalau bukan 'main'
+      - main
 
 jobs:
   build:
@@ -16,7 +16,6 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0' # atau versi kamu
           channel: 'stable'
 
       - name: Enable web support
