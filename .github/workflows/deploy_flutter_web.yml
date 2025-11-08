@@ -1,36 +1,56 @@
 name: Deploy Flutter Web to GitHub Pages
 
+# Memicu workflow setiap kali ada push ke branch 'main'
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+
+# Memberi izin workflow untuk "menulis" (push)
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
-    permissions:
-      contents: write # <-- Tambahkan baris ini
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      # 1. Ambil kode dari repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
+      # 2. Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      - name: Enable web support
-        run: flutter config --enable-web
-
+      # 3. Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build web release
-        run: flutter build web --release
+      # 4. Build aplikasi (DENGAN BASE HREF YANG BENAR)
+      - name: Build Flutter Web
+        run: flutter build web --base-href /student_activity_tracker/
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      # 5. UPLOAD ARTIFACT (INI BAGIAN PENTING)
+      # Pastikan path-nya benar menunjuk ke 'build/web'
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/web
+          path: 'build/web' # <-- PASTIKAN INI BENAR
+
+  # Job ini mengambil artifact dan mendeploy-nya
+  deploy:
+    needs: build # <-- Menunggu 'build' selesai
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1 # <-- Action untuk deploy
