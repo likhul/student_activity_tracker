@@ -1,0 +1,41 @@
+name: student_activity_tracker
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.1.0
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # 1. Lokalisasi (WAJIB ADA)
+  flutter_localizations:
+    sdk: flutter
+  intl:  # Versi terbaru untuk format tanggal
+
+  # 2. Package Fitur
+  shared_preferences: ^2.2.0
+  google_fonts: ^6.1.0
+  flutter_staggered_animations: ^1.1.1
+  fl_chart: ^0.66.0 # Untuk Pie Chart
+
+  # 3. Ikon (jika Anda pakai)
+  cupertino_icons: ^1.0.6
+  table_calendar: ^3.2.0
+  shimmer: ^3.0.0
+  introduction_screen: ^4.0.0
+  google_nav_bar: ^5.0.7
+  url_launcher: ^6.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
